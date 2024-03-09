@@ -1,14 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: "event",
+      level: "query",
+    },
+  ],
+});
+prisma.$on("query", (e) => {
+  console.log(e);
+  console.log("Query: " + e.query);
+  console.log("Duration: " + e.duration + "ms");
+  console.log("Parameters: " + e.params);
+  console.log("Date and Time: " + e.timestamp);
+});
 
 const main = async () => {
-  // const getAllFromDB = await prisma.post.findMany();
-  const deletePost = await prisma.post.delete({
-    where: {
-      id: 4,
-    },
-  });
+  const getAllFromDB = await prisma.post.findMany();
+  //   console.log(getAllFromDB);
 };
 
 main();
