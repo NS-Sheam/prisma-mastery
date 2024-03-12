@@ -34,7 +34,15 @@ const aggregates = async () => {
       age: true,
     },
   });
-  console.log(minAge);
+  const countPostTitle = await prisma.post.aggregate({
+    _count: {
+      title: true,
+    },
+    where: {
+      published: true,
+    },
+  });
+  console.log(countPostTitle);
 };
 
 aggregates();
